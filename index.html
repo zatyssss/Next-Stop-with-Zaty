@@ -6,10 +6,12 @@
 
 <title>Next Stop with Zaty</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
 <style>
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
     background-image: url('zaty%202.jpeg');
     background-size: cover;
     background-position: center 10%;
@@ -26,19 +28,22 @@ body {
 
 header {
     text-align: center;
-    padding: 80px 20px;
+    padding: 100px 20px 60px;
 }
 
 header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 68px;
     color: white;
-    font-size: 55px;
     margin: 0;
-    text-shadow: 2px 2px 10px rgba(0,0,0,0.7);
+    letter-spacing: 2px;
+    text-shadow: 3px 3px 12px rgba(0,0,0,0.7);
 }
 
 header p {
     color: white;
     font-size: 22px;
+    margin-top: 15px;
     text-shadow: 2px 2px 10px rgba(0,0,0,0.7);
 }
 
@@ -50,14 +55,16 @@ header p {
 
 .card {
     background: rgba(255,255,255,0.92);
-    padding: 25px;
-    border-radius: 15px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    padding: 30px;
+    border-radius: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
 h2 {
+    font-family: 'Playfair Display', serif;
     color: #333;
+    margin-top: 0;
 }
 
 ul {
@@ -67,14 +74,20 @@ ul {
 .voicebot-section {
     text-align: center;
     margin-top: 40px;
-    padding-bottom: 40px;
+    padding-bottom: 50px;
+}
+
+.voicebot-section h2 {
+    color: white;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.7);
 }
 
 footer {
     text-align: center;
     color: white;
-    padding: 20px;
     font-weight: bold;
+    padding: 20px;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.7);
 }
 
 </style>
@@ -86,20 +99,20 @@ footer {
 
 <header>
     <h1>✈️ Next Stop with Zaty</h1>
-    <p>Japan Winter Adventure 2026</p>
+    <p>Explore The World One Stop At A Time</p>
 </header>
 
 <div class="container">
 
     <div class="card">
-        <h2>🇯🇵 Upcoming Trip</h2>
+        <h2>🇯🇵 Japan Winter Adventure 2026</h2>
 
         <p>
-            Tokyo • Mount Fuji • Echigo Yuzawa • Kanazawa • Shirakawago • Osaka • Kobe • Nara • Kyoto
+            30 January 2026 - 8 February 2026
         </p>
 
         <p>
-            📅 30 December 2026 - 10 January 2027
+            Tokyo • Mount Fuji • Echigo Yuzawa • Kanazawa • Shirakawago • Osaka • Kobe • Nara • Kyoto
         </p>
     </div>
 
@@ -109,11 +122,11 @@ footer {
         <ul>
             <li>✈️ Day 1 - Kuala Lumpur → Tokyo Haneda</li>
             <li>🗻 Day 2 - Mount Fuji & Kawaguchiko</li>
-            <li>🏙️ Day 3 - Tokyo City (Asakusa, Skytree, Akihabara)</li>
-            <li>❄️ Day 4 - Echigo Yuzawa Snow Resort & Shibuya</li>
+            <li>🏙️ Day 3 - Tokyo City Exploration</li>
+            <li>❄️ Day 4 - Echigo Yuzawa Snow Experience</li>
             <li>🏯 Day 5 - Kanazawa</li>
             <li>🌨️ Day 6 - Shirakawago</li>
-            <li>🍜 Day 7 - Osaka City</li>
+            <li>🍜 Day 7 - Osaka</li>
             <li>🦌 Day 8 - Kobe & Nara</li>
             <li>⛩️ Day 9 - Kyoto</li>
             <li>✈️ Return to Malaysia</li>
@@ -124,12 +137,12 @@ footer {
         <h2>🌟 Trip Highlights</h2>
 
         <ul>
-            <li>🗻 Mount Fuji Views</li>
-            <li>❄️ Snow Experience at Echigo Yuzawa</li>
+            <li>🗻 Mount Fuji</li>
+            <li>❄️ Snow Activities at Echigo Yuzawa</li>
             <li>🏘️ Shirakawago Winter Village</li>
-            <li>🍣 Japanese Food Adventure</li>
-            <li>🛍️ Tokyo & Osaka Shopping</li>
-            <li>⛩️ Kyoto Traditional Streets & Temples</li>
+            <li>🍣 Japanese Food Hunting</li>
+            <li>🛍️ Shopping in Tokyo & Osaka</li>
+            <li>⛩️ Kyoto Temples & Culture</li>
         </ul>
     </div>
 
@@ -137,9 +150,7 @@ footer {
 
 <div class="voicebot-section">
 
-    <h2 style="color:white;">
-        🎙️ Chat With Zaty
-    </h2>
+    <h2>🎙️ Chat With Zaty</h2>
 
     <elevenlabs-convai agent-id="agent_4901kvey5tfhf0ab5xw9x5f3n5g7"></elevenlabs-convai>
 
