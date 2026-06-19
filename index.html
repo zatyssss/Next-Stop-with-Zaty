@@ -12,36 +12,48 @@ body {
     font-family: Arial, sans-serif;
     background-image: url('zaty.jpeg');
     background-size: cover;
-    background-position: center;
+    background-position: center 15%;
     background-repeat: no-repeat;
     background-attachment: fixed;
     margin: 0;
     padding: 0;
 }
 
+.overlay {
+    background: rgba(255,255,255,0.15);
+    min-height: 100vh;
+}
+
 header {
     text-align: center;
     padding: 60px 20px;
-    background: rgba(255,255,255,0.7);
 }
 
 header h1 {
-    font-size: 50px;
+    font-size: 52px;
+    color: white;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.7);
     margin: 0;
 }
 
+header p {
+    color: white;
+    font-size: 22px;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.7);
+}
+
 .container {
-    max-width: 1200px;
+    max-width: 1000px;
     margin: auto;
     padding: 20px;
 }
 
 .card {
-    background: rgba(255,255,255,0.9);
+    background: rgba(255,255,255,0.88);
+    border-radius: 15px;
     padding: 25px;
     margin-bottom: 20px;
-    border-radius: 15px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
 h2 {
@@ -52,39 +64,36 @@ ul {
     line-height: 2;
 }
 
-textarea {
-    width: 100%;
-    padding: 15px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-}
-
 .voicebot-section {
     text-align: center;
-    margin-top: 30px;
+    margin-top: 40px;
+    margin-bottom: 50px;
 }
 
 footer {
     text-align: center;
-    padding: 20px;
     color: white;
     font-weight: bold;
+    padding-bottom: 20px;
 }
 
 </style>
+
 </head>
 
 <body>
 
+<div class="overlay">
+
 <header>
     <h1>✈️ Next Stop with Zaty</h1>
+    <p>Explore The World One Stop At A Time</p>
 </header>
 
 <div class="container">
 
     <div class="card">
-        <h2>🌍 Popular Destinations</h2>
+        <h2>🌍 Dream Destinations</h2>
 
         <ul>
             <li>🇯🇵 Japan</li>
@@ -96,26 +105,23 @@ footer {
         </ul>
     </div>
 
-    <div class="card">
-        <h2>📝 Travel Planner</h2>
+</div>
 
-        <p>Tell me where you want to travel and your budget.</p>
+<div class="voicebot-section">
 
-        <textarea rows="8" placeholder="Example: I want a 5-day trip to Japan with a budget of RM5000..."></textarea>
-    </div>
+    <h2 style="color:white; text-shadow:2px 2px 8px rgba(0,0,0,0.7);">
+        🎙️ Talk With Zaty
+    </h2>
 
-    <div class="voicebot-section">
-        <h2>🎙️ Talk With Zaty Travel Assistant</h2>
-
-        <elevenlabs-convai agent-id="agent_4901kvey5tfhf0ab5xw9x5f3n5g7"></elevenlabs-convai>
-
-    </div>
+    <elevenlabs-convai agent-id="agent_4901kvey5tfhf0ab5xw9x5f3n5g7"></elevenlabs-convai>
 
 </div>
 
 <footer>
-    Explore The World With Zaty ✈️
+    Next Stop with Zaty ✈️
 </footer>
+
+</div>
 
 <script src="https://unpkg.com/@elevenlabs/convai-widget-embed"
         async
