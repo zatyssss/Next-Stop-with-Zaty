@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +13,7 @@
 
 body {
     font-family: Calibri, Arial, sans-serif;
-    background-image: url('zaty%202.jpeg');
+    background-image: url('zaty 2.jpeg');
     background-size: cover;
     background-position: center 10%;
     background-repeat: no-repeat;
@@ -47,6 +48,16 @@ header p {
     text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
 }
 
+.profile-pic {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid white;
+    margin-top: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
 .container {
     max-width: 1100px;
     margin: auto;
@@ -63,7 +74,6 @@ header p {
 
 h2 {
     color: #333;
-    font-size: 28px;
 }
 
 p, li {
@@ -74,24 +84,40 @@ ul {
     line-height: 2;
 }
 
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+.gallery img {
+    width: 280px;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    transition: transform 0.3s;
+}
+
+.gallery img:hover {
+    transform: scale(1.05);
+}
+
 .voicebot-section {
     text-align: center;
-    margin-top: 40px;
     padding-bottom: 50px;
 }
 
 .voicebot-section h2 {
     color: white;
-    text-shadow: 2px 2px 10px rgba(0,0,0,0.7);
 }
 
 footer {
     text-align: center;
     color: white;
-    font-weight: bold;
-    font-size: 18px;
     padding: 20px;
-    text-shadow: 2px 2px 10px rgba(0,0,0,0.7);
+    font-weight: bold;
 }
 
 </style>
@@ -103,50 +129,56 @@ footer {
 
 <header>
     <h1>Next Stop with Zaty</h1>
+
     <p>Explore The World One Stop At A Time ✈️</p>
+
+    <img src="zaty.jpeg" alt="Zaty" class="profile-pic">
 </header>
 
 <div class="container">
 
-    <div class="card">
-        <h2>🇯🇵 Japan Winter Adventure 2026</h2>
+<div class="card">
+    <h2>🇯🇵 Japan Winter Adventure 2026</h2>
 
-        <p><strong>Travel Dates:</strong> 30 January 2026 - 8 February 2026</p>
+    <p><strong>Travel Dates:</strong> 30 January 2026 - 8 February 2026</p>
 
-        <p>
-            Tokyo • Mount Fuji • Echigo Yuzawa • Kanazawa • Shirakawago • Osaka • Kobe • Nara • Kyoto
-        </p>
+    <p>
+        Tokyo • Mount Fuji • Echigo Yuzawa • Kanazawa • Shirakawago • Osaka • Kobe • Nara • Kyoto
+    </p>
+</div>
+
+<div class="card">
+    <h2>🗓️ Travel Itinerary</h2>
+
+    <ul>
+        <li>✈️ Day 1 - Kuala Lumpur → Tokyo Haneda</li>
+        <li>🗻 Day 2 - Mount Fuji & Kawaguchiko</li>
+        <li>🏙️ Day 3 - Tokyo City Exploration</li>
+        <li>❄️ Day 4 - Echigo Yuzawa Snow Experience</li>
+        <li>🏯 Day 5 - Kanazawa</li>
+        <li>🌨️ Day 6 - Shirakawago</li>
+        <li>🍜 Day 7 - Osaka</li>
+        <li>🦌 Day 8 - Kobe & Nara</li>
+        <li>⛩️ Day 9 - Kyoto</li>
+        <li>✈️ Return to Kuala Lumpur</li>
+    </ul>
+</div>
+
+<div class="card">
+    <h2>📸 My Japan Travel Gallery</h2>
+
+    <div class="gallery">
+
+        <img src="WhatsApp Image 2026-06-19 at 12.38.48 PM (1).jpeg" alt="Japan">
+
+        <img src="WhatsApp Image 2026-06-19 at 12.38.48 PM.jpeg" alt="Japan">
+
+        <img src="WhatsApp Image 2026-06-19 at 12.38.47 PM (2).jpeg" alt="Japan">
+
+        <img src="WhatsApp Image 2026-06-19 at 12.38.47 PM.jpeg" alt="Japan">
+
     </div>
-
-    <div class="card">
-        <h2>🗓️ Travel Itinerary</h2>
-
-        <ul>
-            <li>✈️ Day 1 - Kuala Lumpur → Tokyo Haneda</li>
-            <li>🗻 Day 2 - Mount Fuji & Kawaguchiko</li>
-            <li>🏙️ Day 3 - Tokyo City Exploration</li>
-            <li>❄️ Day 4 - Echigo Yuzawa Snow Experience</li>
-            <li>🏯 Day 5 - Kanazawa</li>
-            <li>🌨️ Day 6 - Shirakawago</li>
-            <li>🍜 Day 7 - Osaka</li>
-            <li>🦌 Day 8 - Kobe & Nara</li>
-            <li>⛩️ Day 9 - Kyoto</li>
-            <li>✈️ Return to Kuala Lumpur</li>
-        </ul>
-    </div>
-
-    <div class="card">
-        <h2>🌟 Trip Highlights</h2>
-
-        <ul>
-            <li>🗻 Mount Fuji Scenic Views</li>
-            <li>❄️ Snow Experience at Echigo Yuzawa</li>
-            <li>🏘️ Shirakawago UNESCO Heritage Village</li>
-            <li>🍣 Japanese Food Adventure</li>
-            <li>🛍️ Shopping in Tokyo & Osaka</li>
-            <li>⛩️ Kyoto Temples & Traditional Culture</li>
-        </ul>
-    </div>
+</div>
 
 </div>
 
@@ -165,8 +197,9 @@ footer {
 </div>
 
 <script src="https://unpkg.com/@elevenlabs/convai-widget-embed"
-        async
-        type="text/javascript"></script>
+async
+type="text/javascript"></script>
 
 </body>
 </html>
+```
