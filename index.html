@@ -8,11 +8,11 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 
-<!-- 1. Importmap for Simli SDK module -->
+<!-- HeyGen Streaming Avatar SDK Import Map -->
 <script type="importmap">
   {
     "imports": {
-      "simli-client": "https://cdn.jsdelivr.net/npm/simli-client@latest/+esm"
+      "@heygen/streaming-avatar": "https://cdn.jsdelivr.net/npm/@heygen/streaming-avatar@1.5.0/+esm"
     }
   }
 </script>
@@ -90,7 +90,7 @@ ul {
     color: white;
 }
 
-/* 2. Avatar Container Styling */
+/* Avatar Container Styling */
 #avatar-container {
     position: relative;
     width: 320px;
@@ -102,8 +102,7 @@ ul {
     background-color: #1e293b;
 }
 
-#avatar-container video, 
-#avatar-container audio {
+#avatar-container video {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -112,8 +111,8 @@ ul {
     left: 0;
 }
 
-#simli-video {
-    display: none; /* Auto-activates on WebRTC speech stream */
+#heygen-video {
+    display: none; /* Shows up automatically when WebRTC stream connects */
 }
 
 .status-badge {
@@ -186,16 +185,15 @@ footer {
 
     <h2>🎙️ Chat With Zaty</h2>
 
-    <!-- 3. Avatar Player Display -->
+    <!-- Avatar Display Player -->
     <div id="avatar-container">
         <div class="status-badge" id="status">Connecting...</div>
         
         <!-- Idle 10s video loop -->
-        <video id="idle-video" src="sample-avatar.mp4" autoplay loop muted playsinline></video>
+        <video id="idle-video" src="lara.mp4" autoplay loop muted playsinline></video>
         
-        <!-- Live WebRTC Lip-synced Stream -->
-        <video id="simli-video" autoplay playsinline></video>
-        <audio id="simli-audio" autoplay></audio>
+        <!-- Live HeyGen WebRTC Stream -->
+        <video id="heygen-video" autoplay playsinline></video>
     </div>
 
     <!-- ElevenLabs Embedded Voice Bot Widget -->
@@ -212,51 +210,62 @@ footer {
 <!-- ElevenLabs Widget Script -->
 <script src="https://elevenlabs.io/convai-widget/index.js" async type="text/javascript"></script>
 
-<!-- 4. Simli Live Avatar Script -->
+<!-- HeyGen Interactive Avatar Script -->
 <script type="module">
-  import { SimliClient } from "simli-client";
+  import StreamingAvatar, { AvatarQuality, StreamingEvents } from "@heygen/streaming-avatar";
 
-  // Replace these placeholders with your actual keys from Simli Dashboard:
-  const SIMLI_API_KEY = "sk_V2_hgu_kwMvox9DrN8_LLxuGzCvlxyLNJSh0DuOikTzuCotvWMI";
-  const FACE_ID = "c092ee1f814f47cc81a5810867170575";
+  // Insert your HeyGen API Key and Avatar ID here:
+  const HEYGEN_API_KEY = "sk_V2_hgu_kwMvox9DrN8_LLxuGzCvlxyLNJSh0DuOikTzuCotvWMI";
+  const AVATAR_ID = "c092ee1f814f47cc81a5810867170575";
 
   const idleVideo = document.getElementById("idle-video");
-  const simliVideo = document.getElementById("simli-video");
-  const simliAudio = document.getElementById("simli-audio");
+  const heygenVideo = document.getElementById("heygen-video");
   const statusBadge = document.getElementById("status");
 
-  const simliClient = new SimliClient();
+  let avatar = null;
+
+  async function getAccessToken() {
+    const res = await fetch("https://api.heygen.com/v1/streaming.create_token", {
+      method: "POST",
+      headers: {
+        "x-api-key": HEYGEN_API_KEY
+      }
+    });
+    const data = await res.json();
+    return data.data.token;
+  }
 
   async function initAvatar() {
     try {
-      simliClient.Initialize({
-        apiKey: SIMLI_API_KEY,
-        faceId: FACE_ID,
-        handleSilence: true,
-        videoRef: simliVideo,
-        audioRef: simliAudio
+      statusBadge.innerText = "Connecting...";
+      const token = await getAccessToken();
+
+      avatar = new StreamingAvatar({ token });
+
+      avatar.on(StreamingEvents.STREAM_READY, (event) => {
+        heygenVideo.srcObject = event.detail;
+        heygenVideo.play();
+        statusBadge.innerText = "Live";
+        idleVideo.style.display = "none";
+        heygenVideo.style.display = "block";
       });
 
-      await simliClient.start();
-      statusBadge.innerText = "Ready";
+      avatar.on(StreamingEvents.STREAM_DISCONNECTED, () => {
+        statusBadge.innerText = "Idle";
+        heygenVideo.style.display = "none";
+        idleVideo.style.display = "block";
+      });
+
+      await avatar.createStartAvatar({
+        quality: AvatarQuality.Medium,
+        avatarName: AVATAR_ID
+      });
+
     } catch (err) {
-      console.error("Avatar failed to load:", err);
+      console.error("HeyGen Avatar failed to initialize:", err);
       statusBadge.innerText = "Error";
     }
   }
-
-  // Toggle video display when live WebRTC stream connects
-  simliClient.on("connected", () => {
-    statusBadge.innerText = "Live";
-    idleVideo.style.display = "none";
-    simliVideo.style.display = "block";
-  });
-
-  simliClient.on("disconnected", () => {
-    statusBadge.innerText = "Idle";
-    simliVideo.style.display = "none";
-    idleVideo.style.display = "block";
-  });
 
   window.addEventListener("DOMContentLoaded", initAvatar);
 </script>
