@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -8,6 +7,15 @@
 <title>Next Stop with Zaty</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
+<!-- 1. Importmap for Simli SDK module -->
+<script type="importmap">
+  {
+    "imports": {
+      "simli-client": "https://cdn.jsdelivr.net/npm/simli-client@latest/+esm"
+    }
+  }
+</script>
 
 <style>
 
@@ -82,6 +90,44 @@ ul {
     color: white;
 }
 
+/* 2. Avatar Container Styling */
+#avatar-container {
+    position: relative;
+    width: 320px;
+    height: 320px;
+    margin: 20px auto;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    background-color: #1e293b;
+}
+
+#avatar-container video, 
+#avatar-container audio {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#simli-video {
+    display: none; /* Auto-activates on WebRTC speech stream */
+}
+
+.status-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    z-index: 10;
+}
+
 footer {
     text-align: center;
     color: white;
@@ -104,7 +150,6 @@ footer {
 
 <div class="container">
 
-```
 <div class="card">
     <h2>🇯🇵 Japan Winter Adventure 2026</h2>
 
@@ -134,17 +179,27 @@ footer {
         <li>✈️ Return to Kuala Lumpur</li>
     </ul>
 </div>
-```
 
 </div>
 
 <div class="voicebot-section">
 
-```
-<h2>🎙️ Chat With Zaty</h2>
+    <h2>🎙️ Chat With Zaty</h2>
 
-<elevenlabs-convai agent-id="agent_4901kvey5tfhf0ab5xw9x5f3n5g7"></elevenlabs-convai>
-```
+    <!-- 3. Avatar Player Display -->
+    <div id="avatar-container">
+        <div class="status-badge" id="status">Connecting...</div>
+        
+        <!-- Idle 10s video loop -->
+        <video id="idle-video" src="sample-avatar.mp4" autoplay loop muted playsinline></video>
+        
+        <!-- Live WebRTC Lip-synced Stream -->
+        <video id="simli-video" autoplay playsinline></video>
+        <audio id="simli-audio" autoplay></audio>
+    </div>
+
+    <!-- ElevenLabs Embedded Voice Bot Widget -->
+    <elevenlabs-convai agent-id="agent_4901kvey5tfhf0ab5xw9x5f3n5g7"></elevenlabs-convai>
 
 </div>
 
@@ -154,9 +209,57 @@ footer {
 
 </div>
 
-<script src="https://unpkg.com/@elevenlabs/convai-widget-embed"
-        async
-        type="text/javascript"></script>
+<!-- ElevenLabs Widget Script -->
+<script src="https://elevenlabs.io/convai-widget/index.js" async type="text/javascript"></script>
+
+<!-- 4. Simli Live Avatar Script -->
+<script type="module">
+  import { SimliClient } from "simli-client";
+
+  // Replace these placeholders with your actual keys from Simli Dashboard:
+  const SIMLI_API_KEY = "sk_V2_hgu_kwMvox9DrN8_LLxuGzCvlxyLNJSh0DuOikTzuCotvWMI";
+  const FACE_ID = "c092ee1f814f47cc81a5810867170575";
+
+  const idleVideo = document.getElementById("idle-video");
+  const simliVideo = document.getElementById("simli-video");
+  const simliAudio = document.getElementById("simli-audio");
+  const statusBadge = document.getElementById("status");
+
+  const simliClient = new SimliClient();
+
+  async function initAvatar() {
+    try {
+      simliClient.Initialize({
+        apiKey: SIMLI_API_KEY,
+        faceId: FACE_ID,
+        handleSilence: true,
+        videoRef: simliVideo,
+        audioRef: simliAudio
+      });
+
+      await simliClient.start();
+      statusBadge.innerText = "Ready";
+    } catch (err) {
+      console.error("Avatar failed to load:", err);
+      statusBadge.innerText = "Error";
+    }
+  }
+
+  // Toggle video display when live WebRTC stream connects
+  simliClient.on("connected", () => {
+    statusBadge.innerText = "Live";
+    idleVideo.style.display = "none";
+    simliVideo.style.display = "block";
+  });
+
+  simliClient.on("disconnected", () => {
+    statusBadge.innerText = "Idle";
+    simliVideo.style.display = "none";
+    idleVideo.style.display = "block";
+  });
+
+  window.addEventListener("DOMContentLoaded", initAvatar);
+</script>
 
 </body>
 </html>
