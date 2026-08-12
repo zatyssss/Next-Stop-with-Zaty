@@ -1,273 +1,595 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Next Stop with Zaty</title>
+    <title>Next Stop with Zaty</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap"
+        rel="stylesheet"
+    >
 
-<!-- HeyGen Streaming Avatar SDK Import Map -->
-<script type="importmap">
-  {
-    "imports": {
-      "@heygen/streaming-avatar": "https://cdn.jsdelivr.net/npm/@heygen/streaming-avatar@1.5.0/+esm"
+    <!-- HeyGen Streaming Avatar SDK -->
+    <script type="importmap">
+    {
+        "imports": {
+            "@heygen/streaming-avatar": "https://cdn.jsdelivr.net/npm/@heygen/streaming-avatar@1.5.0/+esm"
+        }
     }
-  }
-</script>
+    </script>
 
-<style>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-body {
-    font-family: Calibri, Arial, sans-serif;
-    background-image: url('Zaty BG.jpeg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    margin: 0;
-    padding: 0;
-}
+        body {
+            font-family: Calibri, Arial, sans-serif;
+            background-image: url("Zaty BG.jpeg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+        }
 
-.overlay {
-    background: rgba(0,0,0,0.25);
-    min-height: 100vh;
-}
+        .overlay {
+            background: rgba(0, 0, 0, 0.25);
+            min-height: 100vh;
+        }
 
-header {
-    text-align: center;
-    padding: 60px 20px;
-}
+        header {
+            text-align: center;
+            padding: 60px 20px;
+        }
 
-header h1 {
-    font-family: 'Great Vibes', cursive;
-    font-size: 90px;
-    color: white;
-    margin: 0;
-    text-shadow: 3px 3px 10px rgba(0,0,0,0.6);
-}
+        header h1 {
+            font-family: "Great Vibes", cursive;
+            font-size: clamp(55px, 10vw, 90px);
+            color: white;
+            margin: 0;
+            text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.6);
+        }
 
-header p {
-    color: white;
-    font-size: 20px;
-    margin-top: 15px;
-    text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
-}
+        header p {
+            color: white;
+            font-size: 20px;
+            margin-top: 15px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+        }
 
-.container {
-    max-width: 1100px;
-    margin: auto;
-    padding: 20px;
-}
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 20px;
+        }
 
-.card {
-    background: rgba(255,255,255,0.92);
-    padding: 30px;
-    border-radius: 20px;
-    margin-bottom: 25px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
+        .card {
+            background: rgba(255, 255, 255, 0.92);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
 
-h2 {
-    color: #333;
-}
+        h2 {
+            color: #333;
+        }
 
-p, li {
-    font-size: 18px;
-}
+        p,
+        li {
+            font-size: 18px;
+        }
 
-ul {
-    line-height: 2;
-}
+        ul {
+            line-height: 2;
+        }
 
-.voicebot-section {
-    text-align: center;
-    padding-bottom: 50px;
-}
+        .voicebot-section {
+            text-align: center;
+            padding: 20px 20px 50px;
+        }
 
-.voicebot-section h2 {
-    color: white;
-}
+        .voicebot-section h2 {
+            color: white;
+        }
 
-/* Avatar Container Styling */
-#avatar-container {
-    position: relative;
-    width: 320px;
-    height: 320px;
-    margin: 20px auto;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-    background-color: #1e293b;
-}
+        #avatar-container {
+            position: relative;
+            width: min(360px, 90vw);
+            aspect-ratio: 1 / 1;
+            margin: 20px auto;
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            background-color: #1e293b;
+        }
 
-#avatar-container video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
+        #avatar-container video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
-#heygen-video {
-    display: none; /* Shows up automatically when WebRTC stream connects */
-}
+        /* lara.mp4 shown initially */
+        #idle-video {
+            display: block;
+            z-index: 1;
+        }
 
-.status-badge {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    background: rgba(0, 0, 0, 0.6);
-    color: white;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    z-index: 10;
-}
+        /* Live HeyGen stream hidden initially */
+        #heygen-video {
+            display: none;
+            z-index: 2;
+        }
 
-footer {
-    text-align: center;
-    color: white;
-    padding: 20px;
-    font-weight: bold;
-}
+        .status-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(0, 0, 0, 0.65);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            z-index: 20;
+        }
 
-</style>
+        #start-avatar {
+            margin-top: 10px;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            background: white;
+            color: #222;
+        }
 
+        #start-avatar:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .elevenlabs-area {
+            max-width: 420px;
+            margin: 25px auto 0;
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 40px 15px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            p,
+            li {
+                font-size: 16px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
 <div class="overlay">
 
-<header>
-    <h1>Next Stop with Zaty</h1>
-    <p>Explore The World One Stop At A Time ✈️</p>
-</header>
+    <header>
+        <h1>Next Stop with Zaty</h1>
+        <p>Explore The World One Stop At A Time ✈️</p>
+    </header>
 
-<div class="container">
+    <div class="container">
 
-<div class="card">
-    <h2>🇯🇵 Japan Winter Adventure 2026</h2>
+        <div class="card">
+            <h2>🇯🇵 Japan Winter Adventure 2026</h2>
 
-    <p>
-        <strong>Travel Dates:</strong>
-        30 January 2026 - 8 February 2026
-    </p>
+            <p>
+                <strong>Travel Dates:</strong>
+                30 January 2026 - 8 February 2026
+            </p>
 
-    <p>
-        Tokyo • Mount Fuji • Echigo Yuzawa • Kanazawa • Shirakawago • Osaka • Kobe • Nara • Kyoto
-    </p>
-</div>
+            <p>
+                Tokyo • Mount Fuji • Echigo Yuzawa • Kanazawa •
+                Shirakawago • Osaka • Kobe • Nara • Kyoto
+            </p>
+        </div>
 
-<div class="card">
-    <h2>🗓️ Travel Itinerary</h2>
+        <div class="card">
+            <h2>🗓️ Travel Itinerary</h2>
 
-    <ul>
-        <li>✈️ Day 1 - Kuala Lumpur → Tokyo Haneda</li>
-        <li>🗻 Day 2 - Mount Fuji & Kawaguchiko</li>
-        <li>🏙️ Day 3 - Tokyo City Exploration</li>
-        <li>❄️ Day 4 - Echigo Yuzawa Snow Experience</li>
-        <li>🏯 Day 5 - Kanazawa</li>
-        <li>🌨️ Day 6 - Shirakawago</li>
-        <li>🍜 Day 7 - Osaka</li>
-        <li>🦌 Day 8 - Kobe & Nara</li>
-        <li>⛩️ Day 9 - Kyoto</li>
-        <li>✈️ Return to Kuala Lumpur</li>
-    </ul>
-</div>
+            <ul>
+                <li>✈️ Day 1 - Kuala Lumpur → Tokyo Haneda</li>
+                <li>🗻 Day 2 - Mount Fuji & Kawaguchiko</li>
+                <li>🏙️ Day 3 - Tokyo City Exploration</li>
+                <li>❄️ Day 4 - Echigo Yuzawa Snow Experience</li>
+                <li>🏯 Day 5 - Kanazawa</li>
+                <li>🌨️ Day 6 - Shirakawago</li>
+                <li>🍜 Day 7 - Osaka</li>
+                <li>🦌 Day 8 - Kobe & Nara</li>
+                <li>⛩️ Day 9 - Kyoto</li>
+                <li>✈️ Return to Kuala Lumpur</li>
+            </ul>
+        </div>
 
-</div>
-
-<div class="voicebot-section">
-
-    <h2>🎙️ Chat With Zaty</h2>
-
-    <!-- Avatar Display Player -->
-    <div id="avatar-container">
-        <div class="status-badge" id="status">Connecting...</div>
-        
-        <!-- Idle 10s video loop -->
-        <iframe width="560" height="315" src="https://app.heygen.com/embeds/c092ee1f814f47cc81a5810867170575" title="Check out a new AI Video I just made!" frameborder="0" allow="encrypted-media; fullscreen;" allowfullscreen></iframe>
-        
-        <!-- Live HeyGen WebRTC Stream -->
-        <video id="heygen-video" autoplay playsinline></video>
     </div>
 
-    <!-- ElevenLabs Embedded Voice Bot Widget -->
-    <elevenlabs-convai agent-id="agent_4901kvey5tfhf0ab5xw9x5f3n5g7"></elevenlabs-convai>
+    <div class="voicebot-section">
+
+        <h2>🎙️ Chat With Zaty</h2>
+
+        <div id="avatar-container">
+
+            <div class="status-badge" id="status">
+                Idle
+            </div>
+
+            <!-- Your 10-second looping avatar video -->
+            <video
+                id="idle-video"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="auto"
+            >
+                <source src="lara.mp4" type="video/mp4">
+                Your browser does not support HTML5 video.
+            </video>
+
+            <!-- HeyGen WebRTC stream -->
+            <video
+                id="heygen-video"
+                autoplay
+                playsinline
+            ></video>
+
+        </div>
+
+        <button id="start-avatar" type="button">
+            Start Live Avatar
+        </button>
+
+        <div class="elevenlabs-area">
+            <elevenlabs-convai
+                agent-id="agent_4901kvey5tfhf0ab5xw9x5f3n5g7">
+            </elevenlabs-convai>
+        </div>
+
+    </div>
+
+    <footer>
+        Next Stop with Zaty ✈️
+    </footer>
 
 </div>
 
-<footer>
-    Next Stop with Zaty ✈️
-</footer>
 
-</div>
+<!-- ElevenLabs Widget -->
+<script
+    src="https://elevenlabs.io/convai-widget/index.js"
+    async
+    type="text/javascript">
+</script>
 
-<!-- ElevenLabs Widget Script -->
-<script src="https://elevenlabs.io/convai-widget/index.js" async type="text/javascript"></script>
 
-<!-- HeyGen Interactive Avatar Script -->
+<!-- HeyGen Streaming Avatar -->
 <script type="module">
-  import StreamingAvatar, { AvatarQuality, StreamingEvents } from "@heygen/streaming-avatar";
 
-  // Insert your HeyGen API Key and Avatar ID here:
-  const HEYGEN_API_KEY = "sk_V2_hgu_kwMvox9DrN8_LLxuGzCvlxyLNJSh0DuOikTzuCotvWMI";
-  const AVATAR_ID = "c092ee1f814f47cc81a5810867170575";
+    import StreamingAvatar, {
+        AvatarQuality,
+        StreamingEvents
+    } from "@heygen/streaming-avatar";
 
-  const idleVideo = document.getElementById("idle-video");
-  const heygenVideo = document.getElementById("heygen-video");
-  const statusBadge = document.getElementById("status");
 
-  let avatar = null;
+    /*
+     * TESTING ONLY.
+     *
+     * Do not expose a real HeyGen API key in public HTML.
+     * For production this token should be generated by
+     * your own backend/serverless function.
+     */
+    const HEYGEN_API_KEY = "QWERTYUIOP";
 
-  async function getAccessToken() {
-    const res = await fetch("https://api.heygen.com/v1/streaming.create_token", {
-      method: "POST",
-      headers: {
-        "x-api-key": HEYGEN_API_KEY
-      }
-    });
-    const data = await res.json();
-    return data.data.token;
-  }
+    const AVATAR_ID =
+        "c092ee1f814f47cc81a5810867170575";
 
-  async function initAvatar() {
-    try {
-      statusBadge.innerText = "Connecting...";
-      const token = await getAccessToken();
 
-      avatar = new StreamingAvatar({ token });
+    const idleVideo =
+        document.getElementById("idle-video");
 
-      avatar.on(StreamingEvents.STREAM_READY, (event) => {
-        heygenVideo.srcObject = event.detail;
-        heygenVideo.play();
-        statusBadge.innerText = "Live";
-        idleVideo.style.display = "none";
-        heygenVideo.style.display = "block";
-      });
+    const heygenVideo =
+        document.getElementById("heygen-video");
 
-      avatar.on(StreamingEvents.STREAM_DISCONNECTED, () => {
-        statusBadge.innerText = "Idle";
-        heygenVideo.style.display = "none";
-        idleVideo.style.display = "block";
-      });
+    const statusBadge =
+        document.getElementById("status");
 
-      await avatar.createStartAvatar({
-        quality: AvatarQuality.Medium,
-        avatarName: AVATAR_ID
-      });
+    const startButton =
+        document.getElementById("start-avatar");
 
-    } catch (err) {
-      console.error("HeyGen Avatar failed to initialize:", err);
-      statusBadge.innerText = "Error";
+
+    let avatar = null;
+    let avatarStarted = false;
+
+
+    async function getAccessToken() {
+
+        const response = await fetch(
+            "https://api.heygen.com/v1/streaming.create_token",
+            {
+                method: "POST",
+
+                headers: {
+                    "Accept": "application/json",
+                    "x-api-key": HEYGEN_API_KEY
+                }
+            }
+        );
+
+
+        if (!response.ok) {
+
+            const errorText = await response.text();
+
+            throw new Error(
+                HeyGen token error ${response.status}: ${errorText}
+            );
+        }
+
+
+        const result = await response.json();
+
+
+        if (!result?.data?.token) {
+            throw new Error(
+                "HeyGen did not return a streaming token."
+            );
+        }
+
+
+        return result.data.token;
     }
-  }
 
-  window.addEventListener("DOMContentLoaded", initAvatar);
+
+    async function initAvatar() {
+
+        if (avatarStarted) {
+            return;
+        }
+
+
+        try {
+
+            avatarStarted = true;
+
+            startButton.disabled = true;
+            startButton.textContent = "Connecting...";
+
+            statusBadge.textContent = "Connecting...";
+
+
+            const token = await getAccessToken();
+
+
+            avatar = new StreamingAvatar({
+                token: token
+            });
+
+
+            /*
+             * HeyGen live video is ready
+             */
+            avatar.on(
+                StreamingEvents.STREAM_READY,
+                async (event) => {
+
+                    console.log(
+                        "HeyGen stream ready",
+                        event
+                    );
+
+
+                    const stream =
+                        event.detail;
+
+
+                    heygenVideo.srcObject =
+                        stream;
+
+
+                    try {
+                        await heygenVideo.play();
+                    }
+                    catch (error) {
+                        console.warn(
+                            "Live video autoplay blocked:",
+                            error
+                        );
+                    }
+
+
+                    idleVideo.style.display =
+                        "none";
+
+                    heygenVideo.style.display =
+                        "block";
+
+
+                    statusBadge.textContent =
+                        "● Live";
+
+
+                    startButton.textContent =
+                        "Avatar Connected";
+                }
+            );
+
+
+            /*
+             * HeyGen disconnected
+             */
+            avatar.on(
+                StreamingEvents.STREAM_DISCONNECTED,
+                () => {
+
+                    console.log(
+                        "HeyGen disconnected"
+                    );
+
+
+                    heygenVideo.srcObject =
+                        null;
+
+                    heygenVideo.style.display =
+                        "none";
+
+
+                    idleVideo.style.display =
+                        "block";
+
+
+                    idleVideo.play().catch(() => {});
+
+
+                    statusBadge.textContent =
+                        "Idle";
+
+
+                    startButton.disabled =
+                        false;
+
+                    startButton.textContent =
+                        "Reconnect Avatar";
+
+
+                    avatarStarted =
+                        false;
+                }
+            );
+
+
+            /*
+             * Start avatar session
+             */
+            await avatar.createStartAvatar({
+
+                quality:
+                    AvatarQuality.Medium,
+
+                avatarName:
+                    AVATAR_ID
+            });
+
+
+        }
+        catch (error) {
+
+            console.error(
+                "HeyGen Avatar initialization failed:",
+                error
+            );
+
+
+            statusBadge.textContent =
+                "Connection Error";
+
+
+            idleVideo.style.display =
+                "block";
+
+            heygenVideo.style.display =
+                "none";
+
+
+            startButton.disabled =
+                false;
+
+            startButton.textContent =
+                "Try Again";
+
+
+            avatarStarted =
+                false;
+        }
+    }
+
+
+    /*
+     * Browser user interaction is safer than
+     * automatically starting WebRTC on page load.
+     */
+    startButton.addEventListener(
+        "click",
+        initAvatar
+    );
+
+
+    /*
+     * Ensure lara.mp4 starts playing.
+     */
+    window.addEventListener(
+        "DOMContentLoaded",
+        () => {
+
+            idleVideo
+                .play()
+                .catch((error) => {
+                    console.warn(
+                        "Idle video autoplay blocked:",
+                        error
+                    );
+                });
+
+        }
+    );
+
+
+    /*
+     * Clean up the HeyGen session when leaving.
+     */
+    window.addEventListener(
+        "beforeunload",
+        async () => {
+
+            if (avatar) {
+
+                try {
+
+                    if (
+                        typeof avatar.stopAvatar
+                        === "function"
+                    ) {
+                        await avatar.stopAvatar();
+                    }
+
+                }
+                catch (error) {
+
+                    console.warn(
+                        "Unable to stop avatar:",
+                        error
+                    );
+                }
+            }
+        }
+    );
+
 </script>
 
 </body>
